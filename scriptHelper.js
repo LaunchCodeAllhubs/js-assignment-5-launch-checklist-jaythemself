@@ -19,50 +19,58 @@ function addDestinationInfo(document, name, diameter, star, distance, moons, ima
 function validateInput(testInput) {
    /*validate if user forgot to enter a value in any field. add alert to notify user all fields required
    make sure info is valid
-   values pilot/co-pilot names strings, fuel level/cargo mass numbers. do i need to separate out cargo and fuel and wrap Number(testInput)? come back
    should return "Empty", "Not a Number", "Is a Number"*/
-   if (testInput === "") {
+   /*if (testInput === "") {
     return "Empty";
    } else if (!isNaN(testInput)) {
     return "Is a Number";
    } else {
     return "Not a Number";
+   }*/
+   let numInput = Number(testInput);
+
+   if (testInput === "") {
+    return "Empty";
+   } else if (isNaN(numInput)) {
+    return "Not a Number";
+   } else if (isNaN(numInput) === false) {
+    return "Is a Number";
    }
+   /*by wrapping numInput in Number() isn't it guaranteed that Not a Number will never get triggered, even if user inputs 
+   a string? Or would Number(string) come back as undefined? Idr.
+   Check back over prev work in replit to refresh memory on how I validated input then, if still doesn't click talk w TA*/
 }
 
 function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
    /*will take a document parameter and strings rep the 4 reqs. make sure to call in script
    cannot use == or === to check NaN. use built in isNaN(value) returns true/false
-   double check and make sure instructions don't care if i address alert in above function or in this one*/
-   let userAlert = "";
-   let validArraySubmission = [
-    ["Pilot", validateInput(pilot), "Empty"],
-    ["Co-pilot", validateInput(copilot), "Empty"],
-    ["Fuel Level", validateInput(fuelLevel), "Is a Number"],
-    ["Cargo Mass", validateInput(cargoMass), "Is a Number"]
-   ];
-   /*for loop through array length. if index 1=2 use alert with template literal and warning message (1 for string 1 for number)*/
-   for (let i = 0; i < validArraySubmission.length; i++) {
-    if (i < 2) {
-        if (validArraySubmission[i][1] === validArraySubmission[i][2]) {
-            userAlert += `You must provide input for ${validArraySubmission[i][0]}.\n`;
-        };
-    } else {
-        if (validArraySubmission[i][1] !== validArraySubmission[i][2]) {
-            userAlert += `${validArraySubmission[i][0]} must be a number.\n`;
-        };
-    }
+   double check and make sure instructions don't care where alert is addressed*/
+  let pilotStatus = document.getElementById("pilotStatus");
+  let copilotStatus = document.getElementById("copilotStatus");
+  let fuel = document.getElementById("fuelStatus");
+  let cargo = document.getElementById("cargoStatus");
+
+  if (validateInput(pilot) === "Empty" || validateInput(copilot) === "Empty" || validateInput(fuel) === "Empty" || validateInput(cargo) === "Empty") {
+    alert("All fields of the form must be filled out.");
     /*ik brain is fried rn but there has to be a better way to write this ^^^^. might need to expand it and iterate through instead of trying to 
-    write as little code as possible, sometimes less does not mean most concise*/
+    write as little code as possible, sometimes less does not mean most concise
+    Yeah getting rid of array of valid submission idk where I was going with this i can barely make sense of it and it's been like. a day and a half.
+    Just rewrite this whole section more in line w prev validations. maybe rewrite below too it'll be annoying taking leftover scraps and fitting
+    it to new stuff. keeping track of variable names my beloathed. Don't code w a migraine kids*/
+   } else if (validateInput(pilot) === "Is a Number" || validateInput(copilot) === "Is a Number" || validateInput(fuel) === "Not a Number" || validateInput(cargo) === "Not a Number") {
+    alert("Provided information is invalid, please check your input.");
+   } else {
+    list.style.visibility = "visible";
+    pilotStatus.innerHTML = `Pilot ${pilot} is ready for launch`;
+    copilotStatus.innerHTML = `Co-pilot ${copilot} is readt for launch`;
+    let launchStatus = document.getElementById("launchStatus");
+
+    /*add function to check values after checking validity? makes most sense to put it there but check instructions. reference prev GA, #3 i think*/
    }
    
-   if (userAlert !== "") {
-    alert(userAlert);
-    return;
-   };
-
-   /*Do i need to be more specific for Inputs/use key words? double check instructions <--instructions do not specify. maybe check grading specs to 
-   be extra safe?*/
+   /*
+   Do i need to be more specific for Inputs/use key words? double check instructions <--instructions do not specify. maybe check grading specs to 
+   be extra safe?
    let fuelInput;
    if (fuelLevel >= 10000) {
     fuelInput = "acceptable fuel levels";
@@ -77,7 +85,8 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
     cargoInput = "cargo too heavy";
    };
 
-   /*write document portion (let xStatus = document.getElementById i think? double check dot notation and finish validating*/
+   write document portion (let xStatus = document.getElementById i think? double check dot notation and finish validating/user feedback. 
+   also innerHTML*/
 }
 
 /*Rest of book instructions for this section:
