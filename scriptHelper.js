@@ -1,7 +1,3 @@
-/*PROBLEMS: preventDefault() not working now and hitting submit refreshes page, 
-validate input under formSubmission is reversing with tests (expects "Fuel too low!" when fuel is high enough, etc?? was working fine earlier), 
-user input not displaying/colors not changing (issue with visibility? nothing shows up on user end at all. stopped working when i got planet info to display finally)*/
-
 require('isomorphic-fetch');
 
 function addDestinationInfo(document, name, diameter, star, distance, moons, imageUrl) {
@@ -24,14 +20,14 @@ function validateInput(testInput) {
  //testing to make sure user input isn't empty/not filled out and that appropriate fields are a string or a number
    if (testInput === "") {
     return "Empty";
-   } else if (isNaN(testInput) === true) {
+   } else if (isNaN(testInput)) {
     return "Not a Number";
-   } else if (isNaN(testInput) === false) {
+   } else if (!isNaN(testInput)) {
     return "Is a Number";
    }
 }
 
-function formSubmission(document, list, pilotName, copilotName, fuelLevel, cargoMass) {
+function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) {
  //creating variables for innerHTML dot notation and sending up alerts if validateInput results were unwanted
   let pilotStatus = document.getElementById("pilotStatus");
   let copilotStatus = document.getElementById("copilotStatus");
@@ -39,42 +35,43 @@ function formSubmission(document, list, pilotName, copilotName, fuelLevel, cargo
   let cargoStatus = document.getElementById("cargoStatus");
   let launchStatus = document.getElementById("launchStatus");
   
-  if (validateInput(pilotName) === "Empty" || validateInput(copilotName) === "Empty" || validateInput(fuelLevel) === "Empty" || validateInput(cargoMass) === "Empty") {
-    alert("All fields of the form must be filled out.");
-    list.style.visibility = "visible";
-   } else if (validateInput(pilotName) === "Is a Number" || validateInput(copilotName) === "Is a Number" || validateInput(fuelLevel) === "Not a Number" || validateInput(cargoMass) === "Not a Number") {
-    alert("Provided information is invalid, please check your input.");
+  if (validateInput(pilot) === "Empty" || validateInput(copilot) === "Empty" || validateInput(fuelLevel) === "Empty" || validateInput(cargoMass) === "Empty") {
+    window.alert("All fields of the form must be filled out.");
+    list.style.visibility = "hidden";
+   } else if (validateInput(pilot) === "Is a Number" || validateInput(copilot) === "Is a Number" || validateInput(fuelLevel) === "Not a Number" || validateInput(cargoMass) === "Not a Number") {
+    window.alert("Provided information is invalid, please check your input.");
     list.style.visibility = "visible";
    } else {
-    pilotStatus.innerHTML = `Pilot ${pilotName} is ready for launch`;
-    copilotStatus.innerHTML = `Co-pilot ${copilotName} is ready for launch`;
+    pilotStatus.innerHTML = `Pilot ${pilot} is ready for launch`;
+    copilotStatus.innerHTML = `Co-pilot ${copilot} is ready for launch`;
+    list.style.visibility = "visible";
    }
    //adjusting innerHTML for specific feedback on what is wrong, adjusting display of results for user
-      if (fuelLevel < 10000 && cargoMass < 10000) {
-         list.style.visibility = "visible";
-         fuelStatus.innerHTML = "Fuel level too low for launch";
-         cargoStatus.innerHTML = "Cargo mass low enough for launch";
-         launchStatus.innerHTML = "Shuttle Not Ready for Launch";
-         launchStatus.style.color = "rgb(199, 37, 78)";
-      } else if (fuelLevel > 10000 && cargoMass > 10000) {
-         list.style.visibility = "visible";
-         fuelStatus.innerHTML = "Fuel level high enough for launch";
-         cargoStatus.innerHTML = "Cargo mass too heavy for launch";
-         launchStatus.innerHTML = "Shuttle Not Ready for Launch";
-         launchStatus.style.color = "rgb(199, 37, 78)";
-      } else if (fuelLevel < 10000 && cargoMass > 10000) {
-         list.style.visibility = "visible";
-         fuelStatus.innerHTML = "Fuel level too low for launch";
-         cargoStatus.innerHTML = "Cargo mass too heavy for launch";
-         launchStatus.innerHTML = "Shuttle Not Ready for Launch";
-         launchStatus.style.color = "rgb(199, 37, 78)";
-      } else if (fuelLevel > 10000 && cargoMass < 10000) {
-         list.style.visibility = "visible";
-         fuelStatus.innerHTML = "Fuel level high enough for launch";
-         cargoStatus.innerHTML = "Cargo mass low enough for launch";
-         launchStatus.innerHTML = "Shuttle is Ready for Launch";
-         launchStatus.style.color = "rgb(65, 159, 106)";
-      }
+   if (fuelLevel <= 10000 && cargoMass >= 10000) {
+    fuelStatus.innerHTML = "Fuel level too low for launch";
+    cargoStatus.innerHTML = "Cargo mass too heavy for launch";
+    launchStatus.innerHTML = "Shuttle Not Ready for Launch";
+    launchStatus.style.color = "rgb(199, 37, 78)";
+    list.style.visibility = "visible";
+   } else if (fuelLevel <= 10000 && cargoMass < 10000) {
+    fuelStatus.innerHTML = "Fuel level too low for launch";
+    cargoStatus.innerHTML = "Cargo mass low enough for launch";
+    launchStatus.innerHTML = "Shuttle Not Ready for Launch";
+    launchStatus.style.color = "rgb(199, 37, 78)";
+    list.style.visibility = "visible";
+   } else if (fuelLevel > 10000 && cargoMass >= 10000) {
+    fuelStatus.innerHTML = "Fuel level high enough for launch";
+    cargoStatus.innerHTML = "Cargo mass too heavy for launch";
+    launchStatus.innerHTML = "Shuttle Not Ready for Launch";
+    launchStatus.style.color = "rgb(199, 37, 78)";
+    list.style.visibility = "visible";
+   } else {
+    fuelStatus.innerHTML = "Fuel level high enough for launch";
+    cargoStatus.innerHTML = "Cargo mass low enough for launch";
+    launchStatus.innerHTML = "Shuttle is Ready for Launch";
+    launchStatus.style.color = "rgb(65, 159, 106)";
+    list.style.visibility = "visible";
+   }
 }
 
 async function myFetch() {
