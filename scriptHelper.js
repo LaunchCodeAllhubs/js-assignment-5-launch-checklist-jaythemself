@@ -16,6 +16,7 @@ function addDestinationInfo(document, name, diameter, star, distance, moons, ima
                `;
 }
 
+//make validateInput and formSubmission code more dry. !validForm = visibility, Shuttle Not Ready, red?
 function validateInput(testInput) {
  //testing to make sure user input isn't empty/not filled out and that appropriate fields are a string or a number
    if (testInput === "") {
