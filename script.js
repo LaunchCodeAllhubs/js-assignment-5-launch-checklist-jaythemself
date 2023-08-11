@@ -1,7 +1,3 @@
-//still unsure when/where i should be using const vs let? if i use const will user's later attempts not be overwritten w first input?
-//stack overflow:const myTextbox = document.getElementById("my-textbox");
-//                     myTextbox.addEventListener("keydown", checkName, false);
-
 window.addEventListener("load", function () {
 
     let listedPlanets;
@@ -16,13 +12,13 @@ window.addEventListener("load", function () {
         // Below this comment call the appropriate helper functions to pick a planet fom the list of planets and add that information to your destination.
         addDestinationInfo(document, selectedPlanet.name, selectedPlanet.diameter, selectedPlanet.star, selectedPlanet.distance, selectedPlanet.moons, selectedPlanet.image)
     })
-    //call function here that includes second event handler instead of putting the event handler inside?? can't think of another
-    //reason why it would keep refreshing page on submission/refusing to clock submit button as a button
-    //okay no still refreshing page on submission. lot of elements coming up null or void??
+    //separated out event handlers so "load" and "submit" aren't tied together (was getting errors where submit button was frozen)
     uponFormSubmit();
 });
 
 function uponFormSubmit() {
+    //bringing in vars to use in form submission
+    //list hidden initially so user doesn't get shuttle info before inputting anything at all
     const formSubmit = document.getElementById("formSubmit");
     const list = document.getElementById("faultyItems");
     list.style.visibility = "hidden";
@@ -35,13 +31,7 @@ function uponFormSubmit() {
     formSubmit.addEventListener("click", function(event) {
         //preventing page from automatically reloading after input, setting up values to use when invoking formSubmission
         //waits for specified input before taking next action (submitting the form and not refreshing the page)
-        //why not working when placed outside the first event handler? why breaking if form called formSubmit like index?
-        //okay it's still saying null and void in places but now the test webpage is functioning correctly soooo????
         event.preventDefault();
         formSubmission(document, list, pilotName.value, copilotName.value, fuelLevel.value, cargoMass.value)
     })
 }
-
-   
-    
-

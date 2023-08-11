@@ -1,3 +1,4 @@
+//DRY scriptHelper: maybe valid/invalidForm vars that hold launchStatus/color/list visibility? can formSub be more concise?
 require('isomorphic-fetch');
 
 function addDestinationInfo(document, name, diameter, star, distance, moons, imageUrl) {
